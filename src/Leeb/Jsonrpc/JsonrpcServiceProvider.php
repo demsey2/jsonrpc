@@ -75,24 +75,18 @@ class JsonrpcServiceProvider extends ServiceProvider
 
 	public function routePrefixToJsonrpc($route_prefix)
 	{
-		\App::before(function () use ($route_prefix)
+		\Route::post($route_prefix, function ()
 		{
-			\Route::post($route_prefix, function ()
-			{
-				\App::make('Leeb\Jsonrpc\Interfaces\RouterInterface')->route();
-			});
+			\App::make('Leeb\Jsonrpc\Interfaces\RouterInterface')->route();
 		});
 	}
 
 	public function routeAllToJsonrpc()
 	{
-		\App::before(function ()
+		\Route::post('{all}', function ($path)
 		{
-			\Route::post('{all}', function ($path)
-			{
-				\App::make('Leeb\Jsonrpc\Interfaces\RouterInterface')->route();
+			\App::make('Leeb\Jsonrpc\Interfaces\RouterInterface')->route();
 
-			})->where('all', '.*');
-		});
+		})->where('all', '.*');
 	}
 }
